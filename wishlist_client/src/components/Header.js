@@ -11,8 +11,11 @@ class Header extends React.Component {
   render () {
     return (
       <header>
-        <span>heard it through the</span>
-        <h1>GRAPE<strong>VINE</strong></h1>
+        <h1 className="display-4">Welcome to Wishlist</h1>
+        <ul>
+            <li onClick={() => {this.props.handleView('home')}} className="btn btn-primary">home</li>
+            <li onClick={() => {this.props.handleView('addWishlist')}} className="btn btn-primary">new wishlist</li>
+        </ul>
       </header>
     )
   }

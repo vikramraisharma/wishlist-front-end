@@ -5,8 +5,9 @@
 import React from 'react'
 
 // components
-import Post from './Post.js'
+import Wishlist from './Wishlist.js'
 import Form from './Form.js'
+import Header from './Header'
 
 // =============================
 // COMPONENT CLASS
@@ -14,18 +15,18 @@ import Form from './Form.js'
 
 class Main extends React.Component {
   state = {
-    posts: []
+    wishlists: []
   }
 
-  fetchPosts = async () => {
-    let response = await fetch('http://localhost:3000/posts')
+  fetchWishlists = async () => {
+    let response = await fetch('http://localhost:3000/wishlists')
     let data = await response.json()
     console.log(data);
-    this.setState({ posts: data })
+    this.setState({ wishlists: data })
   }
 
   handleCreate = async (createData) => {
-    let response = await fetch('http://localhost:3000/posts',
+    let response = await fetch('http://localhost:3000/wishlists',
     {
       body: JSON.stringify(createData),
       method: 'POST',
@@ -38,16 +39,16 @@ class Main extends React.Component {
     this.props.handleView('home')
     this.setState(prevState => {
       return {
-        posts: [...prevState.posts, data]
+        wishlists: [...prevState.wishlists, data]
       }
     })
   }
 
   handleUpdate = async (updateData) => {
-    let response = await fetch(`http://localhost:3000/posts${updateData.id}`,
+    let response = await fetch(`http://localhost:3000/wishlists/${updateData.id}`,
     {
       body: JSON.stringify(updateData),
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
@@ -55,11 +56,11 @@ class Main extends React.Component {
     })
     let data = await response.json()
     this.props.handleView('home')
-    this.fetchPosts()
+    this.fetchWishlists()
   }
 
   handleDelete = async (id) => {
-    let reponse = await fetch(`http://localhost:3000/posts/${id}`, {
+    let reponse = await fetch(`http://localhost:3000/wishlists/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json, text/plain, */*',
@@ -67,15 +68,15 @@ class Main extends React.Component {
       }
     })
     this.setState(prevState => {
-      const posts = prevState.posts.filter(post => post.id !== id)
+      const wishlists = prevState.wishlists.filter(wishlist => wishlist.id !== id)
       return {
-        posts
+        wishlists
       }
     })
   }
 
   componentDidMount() {
-    this.fetchPosts()
+    this.fetchWishlists()
   }
 
 
@@ -86,12 +87,14 @@ class Main extends React.Component {
   render () {
     return (
       <main>
-        <h1>{ this.props.view.pageTitle }</h1>
+
+        
+        <div className="row">
         { this.props.view.page === 'home'
-          ? this.state.posts.map(post => (
-              <Post
-                key={post.id}
-                post={post}
+          ? this.state.wishlists.map(wishlist => (
+              <Wishlist
+                key={wishlist.id}
+                wishlist={wishlist}
                 handleView={this.props.handleView}
                 handleDelete={this.handleDelete}
               />
@@ -103,6 +106,7 @@ class Main extends React.Component {
               view={this.props.view}
             />
         }
+        </div>
       </main>
     )
   }

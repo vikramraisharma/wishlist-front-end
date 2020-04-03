@@ -16,39 +16,45 @@ class App extends React.Component {
   state = {
     view: {
       page: 'home',
-      pageTitle: 'I heard of that...'
+      pageTitle: 'Local Wishlists:'
     },
     formInputs: {
-      name: null,
-      image: null,
-      body: null,
+      user: null,
+      email: null,
+      need_list: null,
+      have_list: null,
+      where_to_find: null,
       id: null
     }
   }
 
-  handleView = (view, post) => {
+  handleView = (view, wishlist) => {
     let pageTitle = ''
     let formInputs = {
-      name: '',
-      image: '',
-      body: '',
-      id: null
+        user: '',
+        email: '',
+        need_list: '',
+        have_list: '',
+        where_to_find: '',
+        id: null
     }
 
     switch(view) {
       case 'home':
         pageTitle = 'I heard that...'
         break
-      case 'addPost':
+      case 'addWishlist':
         pageTitle = 'What did you say?'
         break
-      case 'editPost':
+      case 'editWishlist':
         pageTitle = 'What did you really say?'
         formInputs = {
-          name: post.name,
-          image: post.iamge,
-          body: post.body,
-          id: post.id
+            user: wishlist.user,
+            email: wishlist.email,
+            need_list: wishlist.need_list,
+            have_list: wishlist.have_list,
+            where_to_find: wishlist.where_to_find,
+            id: wishlist.id
         }
         break
       default:
@@ -69,9 +75,9 @@ class App extends React.Component {
   // ==============
   render () {
     return (
-      <div className="large-container">
-        <Header/>
-        <div className="main-container">
+      <div className="container">
+        <div className="container-fluid">
+            <Header handleView={this.handleView} />
           <Main
             view={this.state.view}
             formInputs={this.state.formInputs}
